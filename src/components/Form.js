@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Axios from 'axios'
 
 export const Form = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +9,18 @@ export const Form = () => {
     email: "",
     password: "",
   });
+
+  const addUser = () => {
+    Axios.post('http://localhost:3001/create', {
+      name: formData.name,
+      surName: formData.surName,
+      dni: formData.dni,
+      email: formData.email,
+      password: formData.password
+    }).then((response) => {
+      console.log("success user created")
+    })
+  }
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -20,6 +33,7 @@ export const Form = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("formData:::", formData);
+    addUser()
   };
 
   return (
