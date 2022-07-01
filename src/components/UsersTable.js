@@ -1,7 +1,18 @@
 import React from 'react'
-import { Space, Table} from 'antd';
+import { Button, Space, Table} from 'antd';
+import Swal from 'sweetalert2'
+import Axios from 'axios';
 
-export const TableComponent = ({data}) => {
+export const UsersTable = ({data}) => {
+
+  const deleteUser = (userId) => {
+    Axios.delete(`http://localhost:3001/deleteUser/${userId}`)
+      .then((response) => {
+        if(response.status === 200){
+          Swal.fire('Usuario eliminado con exito')
+        }
+      });
+  }
 
     const columns = [
         {
@@ -32,10 +43,10 @@ export const TableComponent = ({data}) => {
         {
           title: 'Accion',
           key: 'action',
-          render: (_, record) => (
-            <Space size="middle">
-              <a>Editar</a>
-              <a>Eliminar</a>
+          render: (record) => (
+            <Space size="small">
+              <Button type='default' onClick={() => {}}>Editar</Button>
+              <Button type='default' onClick={() => {deleteUser(record.id)}}>Borrar</Button>
             </Space>
           ),
         },
