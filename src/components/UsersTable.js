@@ -87,7 +87,7 @@ export const UsersTable = ({ usersList, setLoad }) => {
       ];
   return (
      <div>
-        <Table columns={columns} pagination={{ pageSize: 5 }} dataSource={usersList} />
+        <Table columns={columns} pagination={{ pageSize: 5 }} dataSource={usersList} rowKey={usersList => usersList.id} />
         <Modal
         visible={visible}
         onCancel={handleCancel}
