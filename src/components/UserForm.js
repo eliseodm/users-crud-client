@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Input, Button } from 'antd';
 import Axios from 'axios'
 
-export const UserForm = () => {
+export const UserForm = ({  setLoad, updateBtn, userId }) => {
   const [formData, setFormData] = useState({
     name: "",
     surName: "",
@@ -20,6 +20,21 @@ export const UserForm = () => {
       password: formData.password
     }).then((response) => {
       console.log("success user created")
+      setLoad(true)
+    })
+  }
+
+  const updateUser = () => {
+    Axios.put('http://localhost:3001/updateUser', {
+      id: userId,
+      name: formData.name,
+      surName: formData.surName,
+      dni: formData.dni,
+      email: formData.email,
+      password: formData.password
+    }).then((response) => {
+      console.log("success user updated")
+      setLoad(true)
     })
   }
 
@@ -30,11 +45,16 @@ export const UserForm = () => {
       [e.target.name]: value,
     });
   };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("formData:::", formData);
-    addUser()
+    if(updateBtn){
+      updateUser()
+      console.log("actualizarUsuario: ", userId )
+    } else {
+      addUser()
+    }
     setFormData({
       name: "",
       surName: "",
@@ -81,9 +101,14 @@ export const UserForm = () => {
         value={formData.password}
         onChange={handleChange}
       />
+
       <Button type="default" htmlType="submit">
-          Enviar
+        {
+          updateBtn ? "Actualizar" : "Nuevo Usuario"
+        }
       </Button>
+
+      
     </form>
   );
 };
